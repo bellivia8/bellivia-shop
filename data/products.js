@@ -1,89 +1,313 @@
-export const products = [
+const products = [
   {
-    id: 1,
-    name: "Sukienka Lniana Ecru",
-    price: 189.99,
+    id: "garnitur",
+    name: "Garnitur dwuczęściowy",
+    category: "garnitury",
+    price: 189,
+
     description:
-      "Elegancka sukienka midi z naturalnego lnu w kolorze ecru. Idealna na letnie dni oraz wieczorne wyjscia. Doskonale przewiewna i komfortowa w noszeniu. Dostepna w rozmiarach XS–XL.",
-    shortDesc: "Sukienka midi z naturalnego lnu",
-    category: "sukienki",
-    sizes: ["XS", "S", "M", "L", "XL"],
-    image: "/images/product-1.jpg",
-    inStock: true,
+      "Elegancki garnitur damski w stylowe paski. Komplet składa się z marynarki i dopasowanych spodni. Idealny na spotkania biznesowe, wesela i wyjątkowe okazje.",
+
+    notes: [
+      "Można przewiązać paskiem (pasek nie jest w zestawie)",
+    ],
+
+    composition: "85% bawełna, 15% elastan",
+
+    measurements: {
+      Marynarka: {
+        "Szerokość pod pachami": "54 cm",
+        "Długość całkowita": "76 cm",
+        "Długość rękawa": "64 cm",
+        "Szerokość ramion": "42 cm",
+      },
+
+      "Spodnie S/M": {
+        Pas: "32 cm",
+        Biodra: "58 cm",
+        "Stan (od pasa do kroku)": "36 cm",
+        "Długość całkowita": "112 cm",
+        "Długość nogawki od kroku": "80 cm",
+      },
+
+      "Spodnie M/L": {
+        Pas: "34 cm",
+        Biodra: "60 cm",
+        "Stan (od pasa do kroku)": "36 cm",
+        "Długość całkowita": "112 cm",
+        "Długość nogawki od kroku": "80 cm",
+      },
+    },
+
+    sizes: ["S/M", "M/L"],
+
+    colors: [
+      {
+        name: "Czarny w paski",
+        value: "czarny",
+        hex: "#1a1a1a",
+
+        images: [
+          "/images/garnitur-czarny-1.JPG",
+          "/images/garnitur-czarny-2.JPG",
+          "/images/garnitur-czarny-3.JPG",
+        ],
+      },
+
+      {
+        name: "Beżowy w paski",
+        value: "bezowy",
+        hex: "#c8a96e",
+
+        images: [
+          "/images/garnitur-bezowy-1.JPG",
+          "/images/garnitur-bezowy-2.JPG",
+        ],
+      },
+    ],
+
+    defaultColor: "czarny",
     featured: true,
+    badge: "Bestseller",
   },
+
   {
-    id: 2,
-    name: "Bluzka Muslinowa Bezowa",
-    price: 129.99,
+    id: "gorset",
+    name: "Gorset koronkowy",
+    category: "gorset",
+    price: 179,
+
     description:
-      "Zwiewna bluzka z delikatnego muslinu w kolorze bezowym. Rekawy z falbankami, luzny krojenie. Idealna w parze ze spodnica lub spodniami wide leg.",
-    shortDesc: "Zwiewna bluzka z muslinu",
-    category: "bluzki",
-    sizes: ["S", "M", "L"],
-    image: "/images/product-2.jpg",
-    inStock: true,
+      "Zmysłowy gorset z delikatną koronką. Podkreśla talię i dodaje kobiecości każdej stylizacji. Idealny jako samodzielna część garderoby lub dopełnienie zestawu.",
+
+    notes: [
+      "Ramiączka regulowane (odpinane)",
+      "Gorset wiązany z tyłu",
+      "Wymiary podane gdy gorset jest związany na minimum",
+    ],
+
+    composition: "88% poliester, 12% elastan",
+
+    measurements: {
+      "Rozmiar S/M": {
+        Biust: "31 cm",
+        Talia: "25 cm",
+        Długość: "38 cm",
+      },
+
+      "Rozmiar M/L": {
+        Biust: "33 cm",
+        Talia: "27 cm",
+        Długość: "38 cm",
+      },
+    },
+
+    sizes: ["S/M", "M/L"],
+
+    colors: [
+      {
+        name: "Ecru / Kość słoniowa",
+        value: "ecru",
+        hex: "#f5f0e8",
+
+        images: [
+          "/images/gorset-koronkowy-1.JPG",
+          "/images/gorset-koronkowy-2.JPG",
+        ],
+      },
+    ],
+
+    defaultColor: "ecru",
     featured: true,
+    badge: "Nowość",
   },
+
   {
-    id: 3,
-    name: "Spodnie Wide Leg Camel",
-    price: 159.99,
-    description:
-      "Szerokie spodnie w stylu palazzo w kolorze camel. Wykonane z miekkiej, opadajacej tkaniny. Wygodne na co dzien i na wyjscia.",
-    shortDesc: "Szerokie spodnie palazzo",
+    id: "spodnie",
+    name: "Spodnie dzwony",
     category: "spodnie",
-    sizes: ["XS", "S", "M", "L", "XL"],
-    image: "/images/product-3.jpg",
-    inStock: true,
-    featured: true,
-  },
-  {
-    id: 4,
-    name: "Sweter Oversize Sand",
-    price: 219.99,
+    price: 129,
+
     description:
-      "Miekki sweter oversize w kolorze piasku. Wykonany z welny merino, ciepoly i komfortowy. Luzny krojenie pasuje do kazdej figury.",
-    shortDesc: "Miekki sweter z welny merino",
-    category: "swetry",
-    sizes: ["S/M", "L/XL"],
-    image: "/images/product-4.jpg",
-    inStock: true,
-    featured: true,
-  },
-  {
-    id: 5,
-    name: "Spodnica Midi Satynowa",
-    price: 149.99,
-    description:
-      "Elegancka spodnica midi z satyny w kolorze kremowym. Gladki material pieknie uklada sie na sylwetce. Zamek z boku.",
-    shortDesc: "Elegancka spodnica midi z satyny",
-    category: "spodnice",
-    sizes: ["XS", "S", "M", "L"],
-    image: "/images/product-5.jpg",
-    inStock: true,
+      "Modne spodnie dzwony o szerokim kroju, które wydłużają sylwetkę. Wysoki stan podkreśla talię. Miękki, rozciągliwy materiał zapewnia komfort przez cały dzień.",
+
+    notes: [
+      "Ściągacz na pośladku",
+      "Materiał rozciągliwy",
+    ],
+
+    composition: "85% elastan, 15% bawełna",
+
+    measurements: {
+      "Rozmiar XS/S": {
+        Pas: "28 cm",
+        Biodra: "37 cm",
+        "Stan (od kroku do góry)": "28 cm",
+        "Długość całkowita": "109 cm",
+        "Długość nogawki od kroku": "80 cm",
+      },
+
+      "Rozmiar S/M": {
+        Pas: "30 cm",
+        Biodra: "39 cm",
+        "Stan (od kroku do góry)": "30 cm",
+        "Długość całkowita": "109 cm",
+        "Długość nogawki od kroku": "80 cm",
+      },
+
+      "Rozmiar M/L": {
+        Pas: "32 cm",
+        Biodra: "41 cm",
+        "Stan (od kroku do góry)": "30 cm",
+        "Długość całkowita": "111 cm",
+        "Długość nogawki od kroku": "82 cm",
+      },
+    },
+
+    sizes: ["XS/S", "S/M", "M/L"],
+
+    colors: [
+      {
+        name: "Czarne",
+        value: "czarny",
+        hex: "#1a1a1a",
+
+        images: [
+          "/images/spodnie-dzwony-czarne-1.JPG",
+          "/images/spodnie-dzwony-czarne-2.JPG",
+        ],
+      },
+
+      {
+        name: "Beżowe",
+        value: "bezowy",
+        hex: "#b38b6d",
+
+        images: [
+          "/images/spodnie-dzwony-bezowe-1.JPG",
+          "/images/spodnie-dzwony-bezowe-2.JPG",
+        ],
+      },
+    ],
+
+    defaultColor: "czarny",
     featured: false,
+    badge: null,
   },
+
   {
-    id: 6,
-    name: "Koszula Oversize Kremowa",
-    price: 139.99,
+    id: "top",
+    name: "Top wiązany halter",
+    category: "topy",
+    price: 59,
+
     description:
-      "Oversizowa koszula z lnu w kolorze kremowym. Dluga, mozna nosic jako tunike lub zawiac w pasie. Wszechstronny must-have sezonu.",
-    shortDesc: "Oversizowa koszula lniana",
-    category: "koszule",
-    sizes: ["S", "M", "L", "XL"],
-    image: "/images/product-6.jpg",
-    inStock: true,
-    featured: false,
+      "Delikatny top w stylu halter z wiązaniem na szyi. Odsłania plecy i dodaje kobiecości. Rozmiar uniwersalny, pasuje na S–L. Idealny na lato, do spodni, spódnic i garniturów.",
+
+    notes: [
+      "Można zakładać na dwa sposoby",
+    ],
+
+    composition: "85% elastan, 15% bawełna",
+
+    measurements: {
+      "Rozmiar uniwersalny": {
+        Biust: "35 cm",
+        "Pas pod biustem (szerokość)": "30 cm",
+        "Długość całkowita": "42 cm",
+      },
+    },
+
+    sizes: ["Uniwersalny"],
+
+    colors: [
+      {
+        name: "Beżowy",
+        value: "bezowy",
+        hex: "#d4b896",
+
+        images: [
+          "/images/top-bezowy-1.jpg",
+          "/images/top-bezowy-2.jpg",
+        ],
+      },
+
+      {
+        name: "Różowy",
+        value: "rozowy",
+        hex: "#f4a7b9",
+
+        images: [
+          "/images/top-rozowy-1.jpg",
+          "/images/top-rozowy-2.jpg",
+        ],
+      },
+
+      {
+        name: "Biały",
+        value: "bialy",
+        hex: "#fafafa",
+
+        images: [
+          "/images/top-bialy-1.jpg",
+          "/images/top-bialy-2.jpg",
+        ],
+      },
+
+      {
+        name: "Brązowy",
+        value: "brazowy",
+        hex: "#4a2b1a",
+
+        images: [
+          "/images/top-brazowy-1.jpg",
+          "/images/top-brazowy-2.jpg",
+        ],
+      },
+
+      {
+        name: "Żółty",
+        value: "zolty",
+        hex: "#f5d76e",
+
+        images: [
+          "/images/top-zolty-1.jpg",
+          "/images/top-zolty-2.jpg",
+        ],
+      },
+
+      {
+        name: "Czarny",
+        value: "czarny",
+        hex: "#1a1a1a",
+
+        images: [
+          "/images/top-czarny-1.jpg",
+          "/images/top-czarny-2.jpg",
+        ],
+      },
+    ],
+
+    defaultColor: "bezowy",
+    featured: true,
+    badge: null,
   },
 ];
 
-export const getProductById = (id) =>
-  products.find((p) => p.id === parseInt(id));
+export default products;
 
-export const getFeaturedProducts = () =>
-  products.filter((p) => p.featured);
+export function getProductById(id) {
+  return products.find((p) => p.id === id) || null;
+}
 
-export const getRelatedProducts = (currentId, limit = 4) =>
-  products.filter((p) => p.id !== parseInt(currentId)).slice(0, limit);
+export function getFeaturedProducts() {
+  return products.filter((p) => p.featured);
+}
+
+export function getProductsByCategory(category) {
+  return products.filter((p) => p.category === category);
+}
+
+export function getUpsellSuggestions(currentProductId) {
+  return products.filter((p) => p.id !== currentProductId).slice(0, 3);
+}

@@ -1,148 +1,200 @@
-'use client';
-import { useState } from 'react';
-import { useParams, notFound } from 'next/navigation';
-import { getProductById, getRelatedProducts } from '../../../data/products';
-import { useCart } from '../../../context/CartContext';
-import ProductCard from '../../../components/ProductCard';
-import { ShoppingBag, ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
+"use client";
 
-export default function ProductPage() {
-  const params = useParams();
-  const product = getProductById(params.id);
-  const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [error, setError] = useState('');
+import React, { useState, useContext, use } from "react";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { getProductById, getUpsellSuggestions } from "@/data/products";
+import { CartContext } from "@/context/CartContext";
+import ProductCard from "@/components/ProductCard";
+
+export default function ProductDetailPage({ params }) {
+  const { id } = use(params);
+  const product = getProductById(id);
+  if (!product) notFound();
+
+  const { addToCart } = useContext(CartContext);
+  const [selectedColor, setSelectedColor] = useState(product.defaultColor);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  const [mainImg, setMainImg] = useState(0);
   const [added, setAdded] = useState(false);
+  const [openTab, setOpenTab] = useState("opis");
 
-  if (!product) {
-    return (
-      <div className="max-w-xl mx-auto px-4 py-20 text-center">
-        <h1 className="font-serif text-3xl text-beige-800 mb-4">
-          Produkt nie istnieje
-        </h1>
-        <Link href="/products" className="text-beige-600 underline">
-          Wróc do sklepu
-        </Link>
-      </div>
-    );
-  }
+  const activeColor = product.colors.find((c) => c.value === selectedColor) || product.colors[0];
+  const upsells = getUpsellSuggestions(product.id);
 
-  const related = getRelatedProducts(params.id, 4);
-
-  const handleAddToCart = () => {
-    if (!selectedSize) {
-      setError('Wybierz rozmiar');
-      return;
-    }
-    addToCart(product, selectedSize);
-    setError('');
+  function handleAddToCart() {
+    addToCart({
+      id: `${product.id}-${selectedColor}-${selectedSize}`,
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      color: activeColor.name,
+      size: selectedSize,
+      image: activeColor.images[0],
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
-  };
+  }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Powrot */}
-      <Link
-        href="/products"
-        className="inline-flex items-center gap-2 text-beige-500 hover:text-beige-800 text-sm mb-6"
-      >
-        <ChevronLeft size={16} />
-        Wroć do sklepu
-      </Link>
+    <main className="min-h-screen bg-[#faf8f5]">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-        {/* Zdjecie */}
-        <div className="aspect-[3/4] bg-beige-100 rounded-2xl overflow-hidden">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.parentElement.innerHTML =
-                '<div class="w-full h-full flex items-center justify-center text-beige-300">Brak zdjecia</div>';
-            }}
-          />
-        </div>
-
-        {/* Szczegoły */}
-        <div className="flex flex-col">
-          <p className="text-xs text-beige-500 uppercase tracking-wider mb-2">
-            {product.category}
-          </p>
-          <h1 className="font-serif text-3xl text-beige-900 mb-3">
-            {product.name}
-          </h1>
-          <p className="text-2xl font-bold text-beige-700 mb-6">
-            {product.price.toFixed(2)} zl
-          </p>
-          <p className="text-beige-600 leading-relaxed mb-8">
-            {product.description}
-          </p>
-
-          {/* Rozmiary */}
-          <div className="mb-6">
-            <p className="text-sm font-medium text-beige-800 mb-3 uppercase tracking-wide">
-              Rozmiar
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => {
-                    setSelectedSize(size);
-                    setError('');
-                  }}
-                  className={`px-4 py-2 text-sm border rounded-lg font-medium transition-colors ${
-                    selectedSize === size
-                      ? 'bg-beige-700 text-white border-beige-700'
-                      : 'border-beige-300 text-beige-700 hover:border-beige-600'
-                  }`}
-                >
-                  {size}
+          {/* Galeria */}
+          <div className="flex gap-3">
+            <div className="flex flex-col gap-2 w-16 shrink-0">
+              {activeColor.images.map((img, i) => (
+                <button key={i} onClick={() => setMainImg(i)}
+                  className={`relative aspect-square overflow-hidden border-2 transition-colors ${mainImg === i ? "border-[#d4a853]" : "border-transparent"}`}>
+                  <Image src={img} alt="" fill className="object-cover" sizes="64px" />
                 </button>
               ))}
             </div>
-            {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+            <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-[#ede8e0]">
+              <Image
+                src={activeColor.images[mainImg] || activeColor.images[0]}
+                alt={`${product.name} - ${activeColor.name}`}
+                fill className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 50vw" priority
+              />
+              {product.badge && (
+                <span className="absolute top-4 left-4 bg-[#d4a853] text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
+                  {product.badge}
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* Dodaj do koszyka */}
-          <button
-            onClick={handleAddToCart}
-            className={`w-full py-4 rounded-xl font-medium flex items-center justify-center gap-2 transition-colors text-base ${
-              added
-                ? 'bg-green-600 text-white'
-                : 'bg-beige-700 text-white hover:bg-beige-800'
-            }`}
-          >
-            <ShoppingBag size={18} />
-            {added ? 'Dodano do koszyka!' : 'Dodaj do koszyka'}
-          </button>
+          {/* Informacje */}
+          <div className="flex flex-col justify-center">
+            <p className="text-[#999] text-xs tracking-[0.25em] uppercase mb-3">{product.category}</p>
+            <h1 className="text-2xl md:text-3xl font-light text-[#2c2c2c] italic mb-3">{product.name}</h1>
+            <p className="text-2xl text-[#d4a853] font-light mb-6">{product.price} zł</p>
+            <div className="w-12 h-px bg-[#e8e0d5] mb-6" />
 
-          {/* Info */}
-          <div className="mt-8 pt-8 border-t border-beige-200 grid grid-cols-2 gap-3 text-sm text-beige-500">
-            <div>Bezplatna dostawa od 299 zl</div>
-            <div>Darmowe zwroty 30 dni</div>
-            <div>Wysylka w 24h</div>
-            <div>Bezpieczna platnosc</div>
+            {/* Kolor */}
+            <div className="mb-6">
+              <p className="text-xs tracking-[0.2em] uppercase text-[#2c2c2c] mb-3">
+                Kolor: <span className="text-[#d4a853]">{activeColor.name}</span>
+              </p>
+              <div className="flex gap-3">
+                {product.colors.map((color) => (
+                  <button key={color.value}
+                    onClick={() => { setSelectedColor(color.value); setMainImg(0); }}
+                    title={color.name}
+                    className={`w-8 h-8 rounded-full border-2 transition-all duration-200 ${selectedColor === color.value ? "border-[#d4a853] scale-110 shadow-md" : "border-[#ddd] hover:border-[#aaa]"}`}
+                    style={{ backgroundColor: color.hex }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Rozmiar */}
+            <div className="mb-8">
+              <p className="text-xs tracking-[0.2em] uppercase text-[#2c2c2c] mb-3">
+                Rozmiar: <span className="text-[#d4a853]">{selectedSize}</span>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((size) => (
+                  <button key={size} onClick={() => setSelectedSize(size)}
+                    className={`px-4 py-2 text-xs tracking-wide border transition-all duration-200 ${selectedSize === size ? "bg-[#2c2c2c] text-white border-[#2c2c2c]" : "border-[#ccc] text-[#5a5a5a] hover:border-[#2c2c2c] hover:text-[#2c2c2c]"}`}>
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Dodaj do koszyka */}
+            <button onClick={handleAddToCart}
+              className={`w-full py-4 text-sm tracking-widest uppercase transition-all duration-300 ${added ? "bg-green-600 text-white" : "bg-[#2c2c2c] hover:bg-[#d4a853] text-white"}`}>
+              {added ? "✓ Dodano do koszyka" : "Dodaj do koszyka"}
+            </button>
+
+            <div className="mt-4 flex flex-col gap-2 text-xs text-[#999]">
+              <span>✦ Darmowa dostawa od 299 zł</span>
+<span>✦ Zwroty do 30 dni</span>
+<span>✦ Bezpieczne płatności Stripe</span>
+            </div>
+
+            {/* Zakładki: Opis / Wymiary / Skład */}
+            <div className="mt-10">
+              <div className="flex border-b border-[#e8e0d5]">
+                {["opis", "wymiary", "sklad"].map((tab) => (
+                  <button key={tab} onClick={() => setOpenTab(tab)}
+                    className={`px-4 py-2.5 text-xs tracking-[0.2em] uppercase transition-colors ${openTab === tab ? "border-b-2 border-[#d4a853] text-[#2c2c2c]" : "text-[#999] hover:text-[#2c2c2c]"}`}>
+                    {tab === "opis" ? "Opis" : tab === "wymiary" ? "Wymiary" : "Skład"}
+                  </button>
+                ))}
+              </div>
+
+              <div className="pt-5">
+                {/* Opis */}
+                {openTab === "opis" && (
+                  <div className="flex flex-col gap-3">
+                    <p className="text-sm text-[#5a5a5a] leading-relaxed font-light">{product.description}</p>
+                    {product.notes && product.notes.length > 0 && (
+                      <ul className="flex flex-col gap-1.5 mt-2">
+                        {product.notes.map((note, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-[#5a5a5a] font-light">
+                            <span className="text-[#d4a853] mt-0.5">✦</span>
+                            {note}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
+                {/* Wymiary */}
+                {openTab === "wymiary" && (
+                  <div className="flex flex-col gap-6">
+                    {Object.entries(product.measurements).map(([section, dims]) => (
+                      <div key={section}>
+                        <p className="text-xs tracking-[0.2em] uppercase text-[#2c2c2c] mb-3">{section}</p>
+                        <table className="w-full text-sm">
+                          <tbody>
+                            {Object.entries(dims).map(([key, val]) => (
+                              <tr key={key} className="border-b border-[#f0ebe3]">
+                                <td className="py-2 text-[#999] font-light">{key}</td>
+                                <td className="py-2 text-[#2c2c2c] text-right font-light">{val}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                    <p className="text-xs text-[#bbb] italic">* Wszystkie wymiary podane w centymetrach</p>
+                  </div>
+                )}
+
+                {/* Skład */}
+                {openTab === "sklad" && (
+                  <div>
+                    <p className="text-sm text-[#5a5a5a] font-light">{product.composition}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Dokup jeszcze */}
+        {upsells.length > 0 && (
+          <section className="mt-24">
+            <div className="text-center mb-10">
+              <p className="text-[#d4a853] tracking-[0.3em] uppercase text-xs mb-2">Dokup jeszcze...</p>
+              <h2 className="text-2xl font-light text-[#2c2c2c] italic">Stwórz kompletną stylizację</h2>
+              <div className="w-12 h-px bg-[#d4a853] mx-auto mt-4" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {upsells.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
-
-      {/* Polecane */}
-      {related.length > 0 && (
-        <div>
-          <h2 className="font-serif text-2xl text-beige-900 mb-6">
-            Moze Cie zainteresuje
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+    </main>
   );
 }

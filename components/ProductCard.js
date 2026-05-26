@@ -1,52 +1,82 @@
-'use client';
-import Link from 'next/link';
-import { ShoppingBag } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const [selectedColor, setSelectedColor] = useState(product.defaultColor);
+  const [hovered, setHovered] = useState(false);
 
-  const handleQuickAdd = (e) => {
-    e.preventDefault();
-    const defaultSize = product.sizes[1] || product.sizes[0];
-    addToCart(product, defaultSize);
-  };
+  const activeColor = product.colors.find((c) => c.value === selectedColor) || product.colors[0];
+  const mainImage = activeColor.images[0];
+  const hoverImage = activeColor.images[1] || activeColor.images[0];
 
   return (
-    <Link href={`/products/${product.id}`} className="group block">
-      <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-        {/* Zdjecie */}
-        <div className="relative aspect-[3/4] bg-beige-100 overflow-hidden">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            onError={(e) => {
-              e.target.parentElement.innerHTML =
-                '<div class="w-full h-full flex items-center justify-center text-beige-300 text-sm">Brak zdjecia</div>';
-            }}
-          />
-          <button
-            onClick={handleQuickAdd}
-            className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-beige-700 hover:text-white text-beige-700"
-          >
-            <ShoppingBag size={16} />
-          </button>
-        </div>
+    <div className="group flex flex-col">
+      {/* Zdjęcie */}
+      <Link
+        href={`/products/${product.id}`}
+        className="block relative overflow-hidden bg-[#ede8e0] aspect-[3/4]"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <Image
+          src={hovered ? hoverImage : mainImage}
+          alt={product.name}
+          fill
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        />
 
-        {/* Info */}
-        <div className="p-4">
-          <p className="text-xs text-beige-400 uppercase tracking-wider mb-1">
-            {product.category}
-          </p>
-          <h3 className="font-serif font-medium text-beige-900 text-base mb-2">
+        {/* Badge */}
+        {product.badge && (
+          <span className="absolute top-3 left-3 bg-[#d4a853] text-white text-[10px] tracking-widest uppercase px-2.5 py-1">
+            {product.badge}
+          </span>
+        )}
+
+        {/* Hover overlay */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <div className="bg-[#1a1a1a]/90 text-white text-center text-xs tracking-widest uppercase py-3">
+            Zobacz produkt
+          </div>
+        </div>
+      </Link>
+
+      {/* Info */}
+      <div className="pt-4 pb-2 flex flex-col gap-1">
+        <Link href={`/products/${product.id}`}>
+          <h3 className="text-sm font-light text-[#2c2c2c] hover:text-[#d4a853] transition-colors tracking-wide">
             {product.name}
           </h3>
-          <p className="text-beige-700 font-semibold">
-            {product.price.toFixed(2)} zl
-          </p>
-        </div>
+        </Link>
+        <p className="text-sm text-[#d4a853] font-light">{product.price} zł</p>
+
+        {/* Swatche kolorów */}
+        {product.colors.length > 1 && (
+          <div className="flex gap-1.5 mt-2">
+            {product.colors.map((color) => (
+              <button
+                key={color.value}
+                onClick={() => setSelectedColor(color.value)}
+                title={color.name}
+                className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                  selectedColor === color.value
+                    ? "border-[#d4a853] scale-110"
+                    : "border-transparent hover:border-[#ccc]"
+                }`}
+                style={{ backgroundColor: color.hex }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Rozmiary */}
+        <p className="text-xs text-[#999] font-light mt-1">
+          {product.sizes.join(" · ")}
+        </p>
       </div>
-    </Link>
+    </div>
   );
 }

@@ -1,168 +1,208 @@
-'use client';
-import { useState } from 'react';
-import { useCart } from '../../context/CartContext';
+"use client";
+
+import React, { useState, useContext } from "react";
+import Link from "next/link";
+import { CartContext } from "@/context/CartContext";
 
 export default function CheckoutPage() {
-  const { cart, totalPrice, clearCart } = useCart();
+  const { cart, total } = useContext(CartContext);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [shipping, setShipping] = useState("paczkomat");
+
+  const shippingCost = total >= 299 ? 0 : 20;
+  const finalTotal = total + shippingCost;
+
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    street: '',
-    zip: '',
-    city: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zip: "",
+    paczkomat: "",
   });
 
-  const shipping = totalPrice >= 299 ? 0 : 14.99;
-  const total = totalPrice + shipping;
-
-  const handleChange = (e) => {
+  function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
-      const response = await fetch('/api/payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart, total, customer: form }),
+      const res = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form, cart, total: finalTotal, shipping }),
       });
-      const data = await response.json();
+      const data = await res.json();
       if (data.redirectUrl) {
         window.location.href = data.redirectUrl;
       } else {
-        alert('Wystapil blad platnosci. Sprobuj ponownie.');
+        setError("Błąd płatności. Sprawdź czy klucze Stripe są ustawione w .env.local");
       }
     } catch (err) {
-      alert('Blad polaczenia. Sprawdz internet.');
+      setError("Błąd połączenia. Spróbuj ponownie.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-20 text-center">
-        <p className="text-beige-600 mb-4">Koszyk jest pusty.</p>
-        <a href="/products" className="text-beige-700 underline">
-          Wroć do sklepu
-        </a>
-      </div>
+      <main className="min-h-screen bg-[#faf8f5] flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-[#999] font-light mb-4">Twój koszyk jest pusty.</p>
+          <Link href="/products" className="text-xs tracking-widest uppercase text-[#d4a853] hover:underline">
+            Wróć do sklepu
+          </Link>
+        </div>
+      </main>
     );
   }
 
-  const fields = [
-    { name: 'name', label: 'Imie i nazwisko', type: 'text', placeholder: 'Anna Kowalska' },
-    { name: 'email', label: 'Adres email', type: 'email', placeholder: 'anna@przyklad.pl' },
-    { name: 'phone', label: 'Telefon', type: 'tel', placeholder: '+48 123 456 789' },
-    { name: 'street', label: 'Ulica i numer', type: 'text', placeholder: 'ul. Rozana 12/4' },
-    { name: 'zip', label: 'Kod pocztowy', type: 'text', placeholder: '00-001' },
-    { name: 'city', label: 'Miasto', type: 'text', placeholder: 'Warszawa' },
-  ];
-
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="font-serif text-3xl text-beige-900 mb-8">Kasa</h1>
+    <main className="min-h-screen bg-[#faf8f5]">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 py-12">
+        <div className="text-center mb-12">
+          <p className="text-[#d4a853] tracking-[0.35em] uppercase text-xs mb-3">Ostatni krok</p>
+          <h1 className="text-3xl font-light text-[#2c2c2c] italic">Finalizacja zamówienia</h1>
+          <div className="w-12 h-px bg-[#d4a853] mx-auto mt-4" />
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Formularz */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <h2 className="font-medium text-beige-800 uppercase text-sm tracking-wider mb-2">
-            Dane dostawy
-          </h2>
-          {fields.map((field) => (
-            <div key={field.name}>
-              <label className="block text-xs font-medium text-beige-700 mb-1">
-                {field.label}
-              </label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={form[field.name]}
-                onChange={handleChange}
-                placeholder={field.placeholder}
-                required
-                className="w-full border border-beige-300 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-beige-400 text-beige-900 placeholder:text-beige-300"
-              />
-            </div>
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-beige-700 text-white py-4 rounded-xl font-medium hover:bg-beige-800 transition-colors flex items-center justify-center gap-3 text-base disabled:opacity-60 mt-4"
-          >
-            {loading ? (
-              'Przekierowuje do platnosci...'
-            ) : (
-              <>
-                <span>Zapl przez Przelewy24</span>
-                <span className="font-bold text-lg">{total.toFixed(2)} zl</span>
-              </>
-            )}
-          </button>
+          {/* Formularz */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-          <p className="text-xs text-beige-400 text-center">
-            Zostaniesz przekierowany do bezpiecznej bramki platnosci Przelewy24.
-          </p>
-        </form>
-
-        {/* Podsumowanie zamowienia */}
-        <div className="bg-beige-100 rounded-2xl p-6">
-          <h2 className="font-serif text-xl text-beige-900 mb-5">
-            Twoje zamowienie
-          </h2>
-          <div className="space-y-3">
-            {cart.map((item) => (
-              <div
-                key={`${item.id}-${item.size}`}
-                className="flex items-center gap-3"
-              >
-                <div className="w-14 h-14 bg-beige-200 rounded-lg overflow-hidden flex-shrink-0">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-beige-900 truncate">
-                    {item.name}
-                  </p>
-                  <p className="text-xs text-beige-500">
-                    Rozmiar: {item.size} · Szt.: {item.quantity}
-                  </p>
-                </div>
-                <p className="text-sm font-semibold text-beige-800 flex-shrink-0">
-                  {(item.price * item.quantity).toFixed(2)} zl
-                </p>
+            {/* Dane osobowe */}
+            <h2 className="text-xs tracking-[0.3em] uppercase text-[#2c2c2c]">Dane kontaktowe</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs text-[#999] block mb-1">Imię *</label>
+                <input name="firstName" value={form.firstName} onChange={handleChange} required
+                  className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
               </div>
-            ))}
-          </div>
-          <div className="border-t border-beige-200 mt-5 pt-4 space-y-2 text-sm">
-            <div className="flex justify-between text-beige-600">
-              <span>Produkty</span>
-              <span>{totalPrice.toFixed(2)} zl</span>
+              <div>
+                <label className="text-xs text-[#999] block mb-1">Nazwisko *</label>
+                <input name="lastName" value={form.lastName} onChange={handleChange} required
+                  className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+              </div>
             </div>
-            <div className="flex justify-between text-beige-600">
-              <span>Dostawa</span>
-              <span className={shipping === 0 ? 'text-green-600 font-medium' : ''}>
-                {shipping === 0 ? 'GRATIS' : `${shipping.toFixed(2)} zl`}
-              </span>
+            <div>
+              <label className="text-xs text-[#999] block mb-1">Email *</label>
+              <input name="email" type="email" value={form.email} onChange={handleChange} required
+                className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
             </div>
-            <div className="flex justify-between font-bold text-beige-900 text-base border-t border-beige-200 pt-2 mt-2">
-              <span>Razem</span>
-              <span>{total.toFixed(2)} zl</span>
+            <div>
+              <label className="text-xs text-[#999] block mb-1">Telefon *</label>
+              <input name="phone" type="tel" value={form.phone} onChange={handleChange} required
+                className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+            </div>
+
+            {/* Metoda dostawy */}
+            <h2 className="text-xs tracking-[0.3em] uppercase text-[#2c2c2c] mt-2">Metoda dostawy</h2>
+            <div className="flex flex-col gap-3">
+              <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${shipping === "paczkomat" ? "border-[#d4a853] bg-[#fdf8f0]" : "border-[#e8e0d5] bg-white hover:border-[#ccc]"}`}>
+                <input type="radio" name="shipping" value="paczkomat" checked={shipping === "paczkomat"} onChange={() => setShipping("paczkomat")} className="accent-[#d4a853]" />
+                <div className="flex-1">
+                  <p className="text-sm text-[#2c2c2c] font-light">📦 InPost Paczkomat</p>
+                  <p className="text-xs text-[#999] mt-0.5">Dostawa do wybranego paczkomatu</p>
+                </div>
+                <span className="text-sm text-[#d4a853]">{shippingCost === 0 ? "Gratis" : "20 zł"}</span>
+              </label>
+              <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${shipping === "kurier" ? "border-[#d4a853] bg-[#fdf8f0]" : "border-[#e8e0d5] bg-white hover:border-[#ccc]"}`}>
+                <input type="radio" name="shipping" value="kurier" checked={shipping === "kurier"} onChange={() => setShipping("kurier")} className="accent-[#d4a853]" />
+                <div className="flex-1">
+                  <p className="text-sm text-[#2c2c2c] font-light">🚚 Kurier InPost</p>
+                  <p className="text-xs text-[#999] mt-0.5">Dostawa pod wskazany adres</p>
+                </div>
+                <span className="text-sm text-[#d4a853]">{shippingCost === 0 ? "Gratis" : "20 zł"}</span>
+              </label>
+            </div>
+
+            {/* Adres */}
+            {shipping === "kurier" && (
+              <div className="flex flex-col gap-4">
+                <h2 className="text-xs tracking-[0.3em] uppercase text-[#2c2c2c]">Adres dostawy</h2>
+                <div>
+                  <label className="text-xs text-[#999] block mb-1">Ulica i numer *</label>
+                  <input name="address" value={form.address} onChange={handleChange} required
+                    className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs text-[#999] block mb-1">Kod pocztowy *</label>
+                    <input name="zip" value={form.zip} onChange={handleChange} required placeholder="00-000"
+                      className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[#999] block mb-1">Miasto *</label>
+                    <input name="city" value={form.city} onChange={handleChange} required
+                      className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {shipping === "paczkomat" && (
+              <div>
+                <label className="text-xs text-[#999] block mb-1">Nazwa paczkomatu (np. WAW123) *</label>
+                <input name="paczkomat" value={form.paczkomat} onChange={handleChange} required
+                  placeholder="Wpisz kod paczkomatu"
+                  className="w-full border border-[#e8e0d5] bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#d4a853]" />
+                <p className="text-xs text-[#999] mt-1">Znajdź paczkomat na <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" className="text-[#d4a853] hover:underline">inpost.pl</a></p>
+              </div>
+            )}
+
+            {error && <p className="text-red-500 text-xs bg-red-50 p-3 border border-red-200">{error}</p>}
+
+            <button type="submit" disabled={loading}
+              className="w-full bg-[#2c2c2c] hover:bg-[#d4a853] text-white py-4 text-sm tracking-widest uppercase transition-colors duration-300 disabled:opacity-50 mt-2">
+              {loading ? "Przekierowuję..." : `Zapłać ${finalTotal} zł przez Stripe`}
+            </button>
+            <p className="text-xs text-[#999] text-center">🔒 Bezpieczna płatność SSL · Stripe</p>
+          </form>
+
+          {/* Podsumowanie */}
+          <div>
+            <h2 className="text-xs tracking-[0.3em] uppercase text-[#2c2c2c] mb-6">Podsumowanie</h2>
+            <div className="bg-white border border-[#e8e0d5] p-6 flex flex-col gap-4">
+              {cart.map((item) => (
+                <div key={item.id} className="flex justify-between items-start text-sm">
+                  <div>
+                    <p className="text-[#2c2c2c] font-light">{item.name}</p>
+                    <p className="text-xs text-[#999] mt-0.5">{item.color} · {item.size} · szt. {item.quantity}</p>
+                  </div>
+                  <span className="text-[#d4a853] shrink-0 ml-4">{item.price * item.quantity} zł</span>
+                </div>
+              ))}
+              <div className="border-t border-[#f0ebe3] pt-4 mt-2 flex flex-col gap-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#5a5a5a]">Produkty</span>
+                  <span className="text-[#5a5a5a]">{total} zł</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#5a5a5a]">Dostawa</span>
+                  <span className={shippingCost === 0 ? "text-green-600" : "text-[#5a5a5a]"}>
+                    {shippingCost === 0 ? "🎉 Gratis!" : `${shippingCost} zł`}
+                  </span>
+                </div>
+                {shippingCost > 0 && (
+                  <p className="text-xs text-[#bbb]">Brakuje {299 - total} zł do darmowej dostawy</p>
+                )}
+                <div className="flex justify-between mt-2 pt-2 border-t border-[#f0ebe3]">
+                  <span className="text-[#2c2c2c]">Razem</span>
+                  <span className="text-xl text-[#d4a853] font-light">{finalTotal} zł</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
