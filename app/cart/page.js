@@ -1,6 +1,6 @@
 'use client';
 import { useCart } from '../../context/CartContext';
-import  products  from '../../data/products';
+import products from '../../data/products';
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import ProductCard from '../../components/ProductCard';
