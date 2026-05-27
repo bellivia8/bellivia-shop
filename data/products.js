@@ -143,14 +143,14 @@ const products = [
         ],
       },
       {
-        name: "Beżowe",
-        value: "bezowy",
-        hex: "#b38b6d",
-        images: [
-          "/images/sb1.jpg",
-          "/images/sb2.jpg",
-        ],
-      },
+  name: "Brązowe",
+  value: "brazowy",
+  hex: "#8b5e3c",
+  images: [
+    "/images/sb1.jpg",
+    "/images/sb2.jpg",
+  ],
+},
     ],
     defaultColor: "czarny",
     featured: false,
