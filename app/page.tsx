@@ -121,22 +121,22 @@ export default function HomePage() {
             {
               label: "Garnitury",
               href: "/products?category=garnitury",
-              img: "/images/garnitur-czarny-1.jpg",
+              img: "/images/gc1.jpg",
             },
             {
               label: "Gorset",
               href: "/products?category=gorset",
-              img: "/images/gorset-1.jpg",
+              img: "/images/go1.jpg",
             },
             {
               label: "Spodnie",
               href: "/products?category=spodnie",
-              img: "/images/spodnie-czarne-1.jpg",
+              img: "/images/sc1.jpg",
             },
             {
               label: "Topy",
               href: "/products?category=topy",
-              img: "/images/top-bezowy-1.jpg",
+              img: "/images/tb1.jpg",
             },
           ].map((cat) => (
             <Link
