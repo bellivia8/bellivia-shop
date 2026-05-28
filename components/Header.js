@@ -62,20 +62,17 @@ export default function Header() {
             {/* LOGO */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center"
+              className="absolute left-1/2 -translate-x-1/2"
             >
               <span
-                className="text-[#1f1f1f] leading-none"
+                className="text-[#1f1f1f] leading-none block"
                 style={{
                   fontFamily: "'Great Vibes', cursive",
-                  fontSize: "48px",
+                  fontSize: "58px",
+                  transform: "translateY(4px)",
                 }}
               >
                 Belliviá
-              </span>
-
-              <span className="text-[10px] tracking-[0.6em] uppercase text-[#1f1f1f] mt-1">
-                STYLE
               </span>
             </Link>
 
@@ -132,6 +129,40 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
+
+            {/* Social */}
+            <div className="mt-8 pt-6 border-t border-[#e8e0d5] flex gap-4">
+              <a
+                href="https://www.instagram.com/bellivia.style"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
+              >
+                Instagram
+              </a>
+
+              <span className="text-[#d4a853]">·</span>
+
+              <a
+                href="https://www.tiktok.com/@bellivia.style"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
+              >
+                TikTok
+              </a>
+
+              <span className="text-[#d4a853]">·</span>
+
+              <a
+                href="https://www.facebook.com/profile.php?id=61589264261596"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
+              >
+                Facebook
+              </a>
+            </div>
           </div>
         )}
       </header>
