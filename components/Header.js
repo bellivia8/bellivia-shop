@@ -16,7 +16,7 @@ export default function Header() {
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
           <div className="flex items-center justify-between h-16 md:h-20">
 
-            {/* Hamburger (mobile) */}
+            {/* Hamburger mobile */}
             <button
               className="md:hidden text-[#2c2c2c] p-1"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -42,7 +42,7 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* Nawigacja lewa (desktop) */}
+            {/* Menu desktop */}
             <nav className="hidden md:flex items-center gap-8">
               <Link
                 href="/products"
@@ -59,13 +59,23 @@ export default function Header() {
               </Link>
             </nav>
 
-            {/* Logo / Marka */}
+            {/* LOGO */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2 text-center"
+              className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center"
             >
-              <span className="text-xl md:text-2xl font-light italic tracking-wider text-[#2c2c2c]">
+              <span
+                className="text-[#1f1f1f] leading-none"
+                style={{
+                  fontFamily: "'Great Vibes', cursive",
+                  fontSize: "48px",
+                }}
+              >
                 Belliviá
+              </span>
+
+              <span className="text-[10px] tracking-[0.6em] uppercase text-[#1f1f1f] mt-1">
+                STYLE
               </span>
             </Link>
 
@@ -122,45 +132,10 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
-
-            {/* Social */}
-            <div className="mt-8 pt-6 border-t border-[#e8e0d5] flex gap-4">
-              <a
-                href="https://www.instagram.com/bellivia.style"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
-              >
-                Instagram
-              </a>
-
-              <span className="text-[#d4a853]">·</span>
-
-              <a
-                href="https://www.tiktok.com/@bellivia.style"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
-              >
-                TikTok
-              </a>
-
-              <span className="text-[#d4a853]">·</span>
-
-              <a
-                href="https://www.facebook.com/profile.php?id=61589264261596"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs tracking-widest uppercase text-[#888] hover:text-[#d4a853]"
-              >
-                Facebook
-              </a>
-            </div>
           </div>
         )}
       </header>
 
-      {/* Spacer */}
       <div className="h-16 md:h-20" />
     </>
   );
