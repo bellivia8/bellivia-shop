@@ -4,10 +4,13 @@ const products = [
     name: "Garnitur dwuczęściowy",
     category: "garnitury",
     price: 189,
+
     description:
       "Elegancki garnitur damski w stylowe paski. Komplet składa się z marynarki i dopasowanych spodni. Idealny na spotkania biznesowe, wesela i wyjątkowe okazje.",
 
-    notes: ["Można przewiązać paskiem (pasek nie jest w zestawie)"],
+    notes: [
+      "Można przewiązać paskiem (pasek nie jest w zestawie)",
+    ],
 
     composition: "85% bawełna, 15% elastan",
 
@@ -39,8 +42,9 @@ const products = [
     sizes: [
       {
         name: "S/M",
-        available: true,
+        available: false,
       },
+
       {
         name: "M/L",
         available: false,
@@ -52,6 +56,7 @@ const products = [
         name: "Czarny w paski",
         value: "czarny",
         hex: "#1a1a1a",
+
         images: [
           "/images/gc1.jpg",
           "/images/gc2.jpg",
@@ -63,6 +68,7 @@ const products = [
         name: "Beżowy w paski",
         value: "bezowy",
         hex: "#c8a96e",
+
         images: [
           "/images/gb1.jpg",
           "/images/gb2.jpg",
@@ -113,6 +119,7 @@ const products = [
         name: "Ecru / Kość słoniowa",
         value: "ecru",
         hex: "#f5f0e8",
+
         images: [
           "/images/go1.jpg",
           "/images/go2.jpg",
@@ -134,7 +141,10 @@ const products = [
     description:
       "Modne spodnie dzwony o szerokim kroju, które wydłużają sylwetkę. Wysoki stan podkreśla talię. Miękki, rozciągliwy materiał zapewnia komfort przez cały dzień.",
 
-    notes: ["Ściągacz na pośladku", "Materiał rozciągliwy"],
+    notes: [
+      "Ściągacz na pośladku",
+      "Materiał rozciągliwy",
+    ],
 
     composition: "85% elastan, 15% bawełna",
 
@@ -171,6 +181,7 @@ const products = [
         name: "Czarne",
         value: "czarny",
         hex: "#1a1a1a",
+
         images: [
           "/images/sc1.jpg",
           "/images/sc2.jpg",
@@ -181,6 +192,7 @@ const products = [
         name: "Brązowe",
         value: "brazowy",
         hex: "#8b5e3c",
+
         images: [
           "/images/sb1.jpg",
           "/images/sb2.jpg",
@@ -202,7 +214,9 @@ const products = [
     description:
       "Delikatny top w stylu halter z wiązaniem na szyi. Odsłania plecy i dodaje kobiecości. Rozmiar uniwersalny, pasuje na S–L. Idealny na lato, do spodni, spódnic i garniturów.",
 
-    notes: ["Można zakładać na dwa sposoby"],
+    notes: [
+      "Można zakładać na dwa sposoby",
+    ],
 
     composition: "85% elastan, 15% bawełna",
 
