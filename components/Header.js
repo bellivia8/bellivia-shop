@@ -59,16 +59,14 @@ export default function Header() {
               </Link>
             </nav>
 
-            {/* LOGO */}
+            {/* Logo / Marka */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2"
+              className="absolute left-1/2 -translate-x-1/2 text-center"
             >
-              <img
-                src="/logo.jpg"
-                alt="Belliviá Style"
-                className="h-10 md:h-14 w-auto object-contain"
-              />
+              <span className="text-xl md:text-2xl font-light italic tracking-wider text-[#2c2c2c]">
+                Belliviá
+              </span>
             </Link>
 
             {/* Prawa strona */}
