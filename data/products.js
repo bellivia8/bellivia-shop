@@ -6,8 +6,11 @@ const products = [
     price: 189,
     description:
       "Elegancki garnitur damski w stylowe paski. Komplet składa się z marynarki i dopasowanych spodni. Idealny na spotkania biznesowe, wesela i wyjątkowe okazje.",
+
     notes: ["Można przewiązać paskiem (pasek nie jest w zestawie)"],
+
     composition: "85% bawełna, 15% elastan",
+
     measurements: {
       Marynarka: {
         "Szerokość pod pachami": "54 cm",
@@ -15,6 +18,7 @@ const products = [
         "Długość rękawa": "64 cm",
         "Szerokość ramion": "42 cm",
       },
+
       "Spodnie S/M": {
         Pas: "32 cm",
         Biodra: "58 cm",
@@ -22,6 +26,7 @@ const products = [
         "Długość całkowita": "112 cm",
         "Długość nogawki od kroku": "80 cm",
       },
+
       "Spodnie M/L": {
         Pas: "34 cm",
         Biodra: "60 cm",
@@ -30,7 +35,18 @@ const products = [
         "Długość nogawki od kroku": "80 cm",
       },
     },
-    sizes: ["S/M", "M/L"],
+
+    sizes: [
+      {
+        name: "S/M",
+        available: true,
+      },
+      {
+        name: "M/L",
+        available: false,
+      },
+    ],
+
     colors: [
       {
         name: "Czarny w paski",
@@ -42,6 +58,7 @@ const products = [
           "/images/gc3.jpg",
         ],
       },
+
       {
         name: "Beżowy w paski",
         value: "bezowy",
@@ -52,6 +69,7 @@ const products = [
         ],
       },
     ],
+
     defaultColor: "czarny",
     featured: true,
     badge: "Bestseller",
@@ -62,27 +80,34 @@ const products = [
     name: "Gorset koronkowy",
     category: "gorset",
     price: 179,
+
     description:
       "Zmysłowy gorset z delikatną koronką. Podkreśla talię i dodaje kobiecości każdej stylizacji. Idealny jako samodzielna część garderoby lub dopełnienie zestawu.",
+
     notes: [
       "Ramiączka regulowane (odpinane)",
       "Gorset wiązany z tyłu",
       "Wymiary podane gdy gorset jest związany na minimum",
     ],
+
     composition: "88% poliester, 12% elastan",
+
     measurements: {
       "Rozmiar S/M": {
         Biust: "31 cm",
         Talia: "25 cm",
         Długość: "38 cm",
       },
+
       "Rozmiar M/L": {
         Biust: "33 cm",
         Talia: "27 cm",
         Długość: "38 cm",
       },
     },
+
     sizes: ["S/M", "M/L"],
+
     colors: [
       {
         name: "Ecru / Kość słoniowa",
@@ -94,6 +119,7 @@ const products = [
         ],
       },
     ],
+
     defaultColor: "ecru",
     featured: true,
     badge: "Nowość",
@@ -104,10 +130,14 @@ const products = [
     name: "Spodnie dzwony",
     category: "spodnie",
     price: 129,
+
     description:
       "Modne spodnie dzwony o szerokim kroju, które wydłużają sylwetkę. Wysoki stan podkreśla talię. Miękki, rozciągliwy materiał zapewnia komfort przez cały dzień.",
+
     notes: ["Ściągacz na pośladku", "Materiał rozciągliwy"],
+
     composition: "85% elastan, 15% bawełna",
+
     measurements: {
       "Rozmiar XS/S": {
         Pas: "28 cm",
@@ -116,6 +146,7 @@ const products = [
         "Długość całkowita": "109 cm",
         "Długość nogawki od kroku": "80 cm",
       },
+
       "Rozmiar S/M": {
         Pas: "30 cm",
         Biodra: "39 cm",
@@ -123,6 +154,7 @@ const products = [
         "Długość całkowita": "109 cm",
         "Długość nogawki od kroku": "80 cm",
       },
+
       "Rozmiar M/L": {
         Pas: "32 cm",
         Biodra: "41 cm",
@@ -131,7 +163,9 @@ const products = [
         "Długość nogawki od kroku": "82 cm",
       },
     },
+
     sizes: ["XS/S", "S/M", "M/L"],
+
     colors: [
       {
         name: "Czarne",
@@ -142,16 +176,18 @@ const products = [
           "/images/sc2.jpg",
         ],
       },
+
       {
-  name: "Brązowe",
-  value: "brazowy",
-  hex: "#8b5e3c",
-  images: [
-    "/images/sb1.jpg",
-    "/images/sb2.jpg",
-  ],
-},
+        name: "Brązowe",
+        value: "brazowy",
+        hex: "#8b5e3c",
+        images: [
+          "/images/sb1.jpg",
+          "/images/sb2.jpg",
+        ],
+      },
     ],
+
     defaultColor: "czarny",
     featured: false,
     badge: null,
@@ -162,10 +198,14 @@ const products = [
     name: "Top wiązany halter",
     category: "topy",
     price: 59,
+
     description:
       "Delikatny top w stylu halter z wiązaniem na szyi. Odsłania plecy i dodaje kobiecości. Rozmiar uniwersalny, pasuje na S–L. Idealny na lato, do spodni, spódnic i garniturów.",
+
     notes: ["Można zakładać na dwa sposoby"],
+
     composition: "85% elastan, 15% bawełna",
+
     measurements: {
       "Rozmiar uniwersalny": {
         Biust: "35 cm",
@@ -173,7 +213,9 @@ const products = [
         "Długość całkowita": "42 cm",
       },
     },
+
     sizes: ["Uniwersalny"],
+
     colors: [
       {
         name: "Beżowy",
@@ -181,30 +223,35 @@ const products = [
         hex: "#d4b896",
         images: ["/images/tb1.jpg", "/images/tb2.jpg"],
       },
+
       {
         name: "Różowy",
         value: "rozowy",
         hex: "#f4a7b9",
         images: ["/images/tr1.jpg", "/images/tr2.jpg"],
       },
+
       {
         name: "Biały",
         value: "bialy",
         hex: "#fafafa",
         images: ["/images/tw1.jpg", "/images/tw2.jpg"],
       },
+
       {
         name: "Brązowy",
         value: "brazowy",
         hex: "#4a2b1a",
         images: ["/images/tbr1.jpg", "/images/tbr2.jpg"],
       },
+
       {
         name: "Żółty",
         value: "zolty",
         hex: "#f5d76e",
         images: ["/images/tz1.jpg", "/images/tz2.jpg"],
       },
+
       {
         name: "Czarny",
         value: "czarny",
@@ -212,6 +259,7 @@ const products = [
         images: ["/images/tc1.jpg", "/images/tc2.jpg"],
       },
     ],
+
     defaultColor: "bezowy",
     featured: true,
     badge: null,

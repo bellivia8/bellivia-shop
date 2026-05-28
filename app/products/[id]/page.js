@@ -25,10 +25,17 @@ export default function ProductPage() {
     product.colors[0];
 
   const [selectedColor, setSelectedColor] = useState(defaultColor);
+
   const [selectedImage, setSelectedImage] = useState(
     defaultColor.images[0]
   );
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+
+  const [selectedSize, setSelectedSize] = useState(
+    typeof product.sizes[0] === "object"
+      ? product.sizes.find((s) => s.available)?.name || ""
+      : product.sizes[0]
+  );
+
   const [activeTab, setActiveTab] = useState("opis");
 
   const handleColorChange = (color) => {
@@ -51,10 +58,10 @@ export default function ProductPage() {
     <main className="bg-[#f8f5f0] min-h-screen">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
+
           {/* LEWA STRONA */}
           <div className="flex gap-4">
-            
+
             {/* MINIATURY */}
             <div className="flex flex-col gap-3">
               {selectedColor.images.map((img, index) => (
@@ -137,29 +144,75 @@ export default function ProductPage() {
                 </span>
               </p>
 
-              <div className="flex gap-3">
-                {product.sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-5 py-3 border text-sm tracking-widest ${
-                      selectedSize === size
-                        ? "bg-[#2c2c2c] text-white border-[#2c2c2c]"
-                        : "border-[#ddd] text-[#2c2c2c]"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+              <div className="flex gap-3 flex-wrap">
+
+                {typeof product.sizes[0] === "object" ? (
+                  product.sizes.map((size) => (
+                    <button
+                      key={size.name}
+                      disabled={!size.available}
+                      onClick={() =>
+                        size.available &&
+                        setSelectedSize(size.name)
+                      }
+                      className={`relative px-5 py-3 border text-sm tracking-widest transition-all
+                        ${
+                          selectedSize === size.name
+                            ? "bg-[#2c2c2c] text-white border-[#2c2c2c]"
+                            : "border-[#ddd] text-[#2c2c2c]"
+                        }
+                        ${
+                          !size.available
+                            ? "opacity-40 cursor-not-allowed line-through"
+                            : "hover:border-[#2c2c2c]"
+                        }
+                      `}
+                    >
+                      {size.name}
+
+                      {!size.available && (
+                        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-red-500 whitespace-nowrap">
+                          Wyprzedane
+                        </span>
+                      )}
+                    </button>
+                  ))
+                ) : (
+                  product.sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-5 py-3 border text-sm tracking-widest ${
+                        selectedSize === size
+                          ? "bg-[#2c2c2c] text-white border-[#2c2c2c]"
+                          : "border-[#ddd] text-[#2c2c2c]"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))
+                )}
+
               </div>
             </div>
 
             {/* BUTTON */}
             <button
               onClick={handleAddToCart}
-              className="w-full bg-[#2c2c2c] hover:bg-black text-white py-5 tracking-[0.2em] uppercase text-sm transition-colors"
+              disabled={
+                typeof product.sizes[0] === "object" &&
+                !product.sizes.find(
+                  (s) => s.name === selectedSize
+                )?.available
+              }
+              className="w-full bg-[#2c2c2c] hover:bg-black text-white py-5 tracking-[0.2em] uppercase text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Dodaj do koszyka
+              {typeof product.sizes[0] === "object" &&
+              !product.sizes.find(
+                (s) => s.name === selectedSize
+              )?.available
+                ? "Rozmiar niedostępny"
+                : "Dodaj do koszyka"}
             </button>
 
             {/* INFO */}
