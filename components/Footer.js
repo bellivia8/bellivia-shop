@@ -60,16 +60,19 @@ export default function Footer() {
             <h4 className="text-white text-xs tracking-[0.3em] uppercase mb-6">Pomoc</h4>
             <nav className="flex flex-col gap-3">
               {[
-                "Jak zamawiać?",
-                "Rozmiarówka",
-                "Dostawa i płatności",
-                "Zwroty i reklamacje",
-                "Kontakt",
-              ].map((label) => (
-                <Link key={label} href="/" className="text-sm hover:text-[#d4a853] transition-colors duration-200 font-light">
-                  {label}
-                </Link>
-              ))}
+  { label: "Dostawa i płatności", href: "/dostawa-i-platnosci" },
+  { label: "Zwroty i reklamacje", href: "/zwroty-i-reklamacje" },
+  { label: "Kontakt", href: "/kontakt" },
+].map((link) => (
+  <Link
+    key={link.href}
+    href={link.href}
+    className="text-sm hover:text-[#d4a853] transition-colors duration-200 font-light"
+  >
+    {link.label}
+  </Link>
+))}
+                           
             </nav>
           </div>
         </div>
