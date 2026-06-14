@@ -74,8 +74,26 @@ export default function ProductCard({ product }) {
 
         {/* Rozmiary */}
         <p className="text-xs text-[#999] font-light mt-1">
-          {product.sizes.join(" · ")}
-        </p>
+  {
+    product.sizes?.every(
+      size => typeof size === "object" && size.available === false
+    )
+      ? "Wyprzedane"
+      : product.sizes
+          ?.filter(
+            size =>
+              typeof size === "string" ||
+              size.available !== false
+          )
+          .map(
+            size =>
+              typeof size === "string"
+                ? size
+                : size.name
+          )
+          .join(" · ")
+  }
+</p>
       </div>
     </div>
   );

@@ -278,6 +278,80 @@ const products = [
     featured: true,
     badge: null,
   },
+{
+  id: "stroj-kapielowy-rose",
+  name: "Strój kąpielowy Rosé",
+  category: "stroje",
+
+  price: 109,
+
+  description:
+    "Zmysłowy jednoczęściowy strój kąpielowy w intensywnym czerwonym kolorze. Ozdobiony efektownymi różami i subtelnymi perłami. Kobiece wycięcia podkreślają sylwetkę, a elastyczny materiał zapewnia wygodę i idealne dopasowanie. Doskonały wybór na wakacje, plażę i letnie wyjazdy.",
+
+  notes: [
+    "Dekoracyjne róże",
+    "Ozdobne perły",
+    "Elastyczny materiał",
+  ],
+
+  composition: "80% poliamid, 20% elastan",
+
+  measurements: {
+    XS: {
+      Biust: "84 cm",
+      Talia: "64 cm",
+      Biodra: "67 cm",
+      Długość: "68 cm",
+    },
+
+    S: {
+      Biust: "88 cm",
+      Talia: "68 cm",
+      Biodra: "71 cm",
+      Długość: "70 cm",
+    },
+
+    M: {
+      Biust: "93 cm",
+      Talia: "73 cm",
+      Biodra: "76 cm",
+      Długość: "72 cm",
+    },
+  },
+
+  sizes: [
+    {
+      name: "XS",
+      available: true,
+    },
+    {
+      name: "S",
+      available: true,
+    },
+    {
+      name: "M",
+      available: true,
+    },
+  ],
+
+  colors: [
+    {
+      name: "Czerwony",
+      value: "czerwony",
+      hex: "#d91f26",
+      images: [
+        "/images/IMG_1929.JPG",
+        "/images/IMG_1931.JPG",
+        "/images/IMG_1869.JPG",
+        "/images/IMG_1713.JPG",
+      ],
+    },
+  ],
+
+  defaultColor: "czerwony",
+  featured: true,
+  badge: "Nowość",
+}
 ];
 
 export default products;

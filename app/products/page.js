@@ -11,6 +11,7 @@ const CATEGORIES = [
   { value: "gorset", label: "Gorset" },
   { value: "spodnie", label: "Spodnie" },
   { value: "topy", label: "Topy" },
+  { value: "stroje", label: "Stroje" },
 ];
 
 function ProductsContent() {
