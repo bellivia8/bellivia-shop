@@ -52,11 +52,11 @@ export default function Header() {
               </Link>
 
               <Link
-                href="/products?category=nowosci"
-                className="text-xs tracking-[0.2em] uppercase text-[#2c2c2c] hover:text-[#d4a853] transition-colors duration-200"
-              >
-                Nowości
-              </Link>
+  href="/o-nas"
+  className="text-xs tracking-[0.2em] uppercase text-[#2c2c2c] hover:text-[#d4a853] transition-colors duration-200"
+>
+  O nas
+</Link>
             </nav>
 
             {/* LOGO */}

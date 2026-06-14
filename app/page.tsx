@@ -42,12 +42,6 @@ export default function HomePage() {
               Odkryj kolekcję
             </Link>
 
-            <Link
-              href="/products"
-              className="border border-[#2c2c2c] text-[#2c2c2c] px-8 py-4 tracking-widest uppercase text-sm"
-            >
-              Zobacz nowości
-            </Link>
           </div>
         </div>
       </section>

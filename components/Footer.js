@@ -60,6 +60,7 @@ export default function Footer() {
             <h4 className="text-white text-xs tracking-[0.3em] uppercase mb-6">Pomoc</h4>
             <nav className="flex flex-col gap-3">
               {[
+  { label: "O nas", href: "/o-nas" },
   { label: "Dostawa i płatności", href: "/dostawa-i-platnosci" },
   { label: "Zwroty i reklamacje", href: "/zwroty-i-reklamacje" },
   { label: "Kontakt", href: "/kontakt" },
@@ -83,8 +84,12 @@ export default function Footer() {
         <div className="container mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-white/40">© {new Date().getFullYear()} Belliviá Style. Wszelkie prawa zastrzeżone.</p>
           <div className="flex gap-6">
-            <Link href="/" className="text-xs text-white/40 hover:text-white/70 transition-colors">Polityka prywatności</Link>
-            <Link href="/" className="text-xs text-white/40 hover:text-white/70 transition-colors">Regulamin</Link>
+            <Link href="/polityka-prywatnosci" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+  Polityka prywatności
+  </Link>
+            <Link href="/regulamin" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+  Regulamin
+</Link>
           </div>
         </div>
       </div>
