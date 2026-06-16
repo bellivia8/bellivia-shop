@@ -322,7 +322,7 @@ const products = [
   sizes: [
     {
       name: "XS",
-      available: true,
+      available: false,
     },
     {
       name: "S",
